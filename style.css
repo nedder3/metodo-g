@@ -1,0 +1,738 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Oswald:wght@500;600;700&display=swap');
+
+/* Variables de Diseño */
+:root {
+  --bg-dark: #080809;
+  --bg-gradient-start: #1c0505;
+  --bg-gradient-end: #070708;
+  --card-bg: rgba(12, 12, 14, 0.85);
+  --accent-red: #ff1a1a;
+  --glow-red: rgba(255, 26, 26, 0.4);
+  --dark-red: #8b0000;
+  --deep-maroon: #260505;
+  --text-light: #f5f5f7;
+  --text-gray: #a1a1a6;
+  --border-red: rgba(255, 26, 26, 0.2);
+  --border-glow: rgba(255, 26, 26, 0.45);
+  --correct-green: #00ff66;
+  --correct-glow: rgba(0, 255, 102, 0.4);
+  --wrong-red: #ff3333;
+  --wrong-glow: rgba(255, 51, 51, 0.5);
+  --panel-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.6);
+  --font-title: 'Oswald', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+/* Reset de estilos */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body {
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at center, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 90%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px);
+  background-attachment: fixed;
+  color: var(--text-light);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* Fondo de Ondas de Radar (Radar Sense Background Effect) */
+.radar-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.radar-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 26, 26, 0.08);
+  border-radius: 50%;
+  animation: radar-pulse 8s infinite linear;
+  opacity: 0;
+}
+
+.radar-wave:nth-child(1) { animation-delay: 0s; }
+.radar-wave:nth-child(2) { animation-delay: 2s; }
+.radar-wave:nth-child(3) { animation-delay: 4s; }
+.radar-wave:nth-child(4) { animation-delay: 6s; }
+
+@keyframes radar-pulse {
+  0% {
+    width: 0px;
+    height: 0px;
+    opacity: 0.6;
+    border-color: rgba(255, 26, 26, 0.15);
+  }
+  50% {
+    border-color: rgba(255, 26, 26, 0.08);
+  }
+  100% {
+    width: 1500px;
+    height: 1500px;
+    opacity: 0;
+    border-color: rgba(255, 26, 26, 0);
+  }
+}
+
+/* Efecto de Rasguños/Líneas de Caperuza (Noise/Vignette) */
+.vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.9);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Contenedor Principal (Glassmorphism card) */
+.app-container {
+  position: relative;
+  z-index: 3;
+  width: 90%;
+  max-width: 860px;
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-red);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: var(--panel-shadow);
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+}
+
+.app-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent-red), var(--dark-red));
+}
+
+/* Pantallas individuales */
+.screen {
+  display: none;
+  flex-direction: column;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Temática de Encabezados (Daredevil Title Style) */
+h1 {
+  font-family: var(--font-title);
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+  position: relative;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+}
+
+h1 span.red-text {
+  color: var(--accent-red);
+  text-shadow: 0 0 12px var(--glow-red);
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.dd-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.dd-logo svg {
+  fill: var(--accent-red);
+  filter: drop-shadow(0 0 8px var(--accent-red));
+  width: 70px;
+  height: 70px;
+}
+
+/* Pantalla de Inicio (Welcome) */
+.welcome-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  text-align: center;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+}
+
+.quote-box {
+  border-left: 2px solid var(--accent-red);
+  background: rgba(255, 26, 26, 0.03);
+  padding: 1rem;
+  margin-bottom: 2.5rem;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  border-radius: 0 8px 8px 0;
+}
+
+.quote-box p {
+  margin-bottom: 0.3rem;
+}
+
+.quote-author {
+  font-size: 0.8rem;
+  color: var(--accent-red);
+  text-align: right;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Botones */
+.btn {
+  background: linear-gradient(135deg, var(--accent-red) 0%, var(--dark-red) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-light);
+  font-family: var(--font-title);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 1rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 16, 16, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 16, 16, 0.4), 0 0 10px rgba(255, 16, 16, 0.3);
+  background: linear-gradient(135deg, #ff3333 0%, var(--accent-red) 100%);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Barra de Progreso y Datos */
+.hud-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1.8rem;
+}
+
+.hud-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-gray);
+}
+
+.hud-data span.accent-val {
+  color: var(--accent-red);
+}
+
+.progress-track {
+  height: 8px;
+  background: var(--deep-maroon);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 26, 26, 0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--dark-red) 0%, var(--accent-red) 100%);
+  box-shadow: 0 0 10px var(--accent-red);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0) 100%
+  );
+  animation: bar-shine 2s infinite linear;
+}
+
+@keyframes bar-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Área de Preguntas (Trivia Board) */
+.question-container {
+  margin-bottom: 2rem;
+}
+
+.question-text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  min-height: 70px;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.option-btn {
+  background: rgba(255, 26, 26, 0.02);
+  border: 1px solid var(--border-red);
+  padding: 1.1rem 1.5rem;
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn:hover:not(:disabled) {
+  background: rgba(255, 26, 26, 0.06);
+  border-color: var(--border-glow);
+  box-shadow: 0 0 10px rgba(255, 26, 26, 0.15);
+  transform: translateX(4px);
+}
+
+.option-badge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 26, 26, 0.1);
+  border: 1px solid var(--border-red);
+  color: var(--accent-red);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  font-weight: bold;
+  transition: all 0.25s ease;
+}
+
+.option-btn:hover .option-badge {
+  background: var(--accent-red);
+  color: var(--text-light);
+  border-color: var(--accent-red);
+  box-shadow: 0 0 6px var(--accent-red);
+}
+
+.option-text {
+  flex-grow: 1;
+  line-height: 1.4;
+}
+
+/* Estados al Seleccionar */
+.option-btn.correct {
+  background: rgba(0, 255, 102, 0.08) !important;
+  border-color: var(--correct-green) !important;
+  box-shadow: 0 0 12px var(--correct-glow) !important;
+}
+
+.option-btn.correct .option-badge {
+  background: var(--correct-green) !important;
+  border-color: var(--correct-green) !important;
+  color: #000 !important;
+  box-shadow: 0 0 8px var(--correct-green);
+}
+
+.option-btn.wrong {
+  background: rgba(255, 51, 51, 0.08) !important;
+  border-color: var(--wrong-red) !important;
+  box-shadow: 0 0 12px var(--wrong-glow) !important;
+}
+
+.option-btn.wrong .option-badge {
+  background: var(--wrong-red) !important;
+  border-color: var(--wrong-red) !important;
+  color: #fff !important;
+  box-shadow: 0 0 8px var(--wrong-red);
+}
+
+/* Pantalla de Derrota (Permadeath Screen) */
+.downed-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.downed-icon {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.downed-icon svg {
+  fill: var(--wrong-red);
+  filter: drop-shadow(0 0 10px var(--wrong-red));
+  width: 80px;
+  height: 80px;
+}
+
+.screen-shake {
+  animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
+  40%, 60% { transform: translate3d(8px, 0, 0); }
+}
+
+.screen-red-flash {
+  animation: red-flash 0.8s ease-out;
+}
+
+@keyframes red-flash {
+  0% { box-shadow: inset 0 0 100px rgba(255, 26, 26, 0.8), 0 0 30px rgba(255, 26, 26, 0.6); }
+  100% { box-shadow: var(--panel-shadow); }
+}
+
+.death-title {
+  font-family: var(--font-title);
+  color: var(--wrong-red);
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px var(--wrong-glow);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.defeat-stats {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  margin-bottom: 2rem;
+}
+
+.defeat-stats span.failed-q {
+  color: var(--accent-red);
+  font-weight: bold;
+}
+
+/* Pantalla de Victoria */
+.victory-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.victory-icon {
+  margin-bottom: 1.5rem;
+  position: relative;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.victory-icon svg {
+  fill: var(--correct-green);
+  filter: drop-shadow(0 0 12px var(--correct-green));
+  width: 80px;
+  height: 80px;
+}
+
+.victory-title {
+  font-family: var(--font-title);
+  color: var(--correct-green);
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px var(--correct-glow);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.victory-desc {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-gray);
+  margin-bottom: 2.5rem;
+}
+
+/* Efecto de Sangre en Pantalla Ocasional (Vignette Red Border) */
+.blood-vignette {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0px solid transparent;
+  pointer-events: none;
+  z-index: 10;
+  transition: border-width 0.1s ease, border-color 0.1s ease;
+}
+
+.blood-vignette.active {
+  border: 15px solid rgba(139, 0, 0, 0.45);
+  box-shadow: inset 0 0 60px rgba(139, 0, 0, 0.7);
+}
+
+/* Control de sonido flotante (Expandible al pasar el cursor) */
+.sound-control-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  background: rgba(12, 12, 14, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-red);
+  border-radius: 22px;
+  padding: 0 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+  height: 44px;
+}
+
+.sound-control-wrapper:hover {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 12px var(--glow-red);
+}
+
+.sound-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-light);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sound-toggle-btn:hover {
+  color: var(--accent-red);
+  transform: scale(1.05);
+}
+
+.sound-toggle-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.sound-toggle-btn.muted {
+  color: var(--text-gray);
+}
+
+#volume-slider {
+  width: 0px;
+  opacity: 0;
+  pointer-events: none;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+  accent-color: var(--accent-red);
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  margin-left: 0px;
+}
+
+.sound-control-wrapper:hover #volume-slider,
+.sound-control-wrapper:focus-within #volume-slider {
+  width: 80px;
+  opacity: 1;
+  pointer-events: auto;
+  margin-left: 6px;
+  margin-right: 4px;
+}
+/* Área de Juego de Dos Columnas (Tarjeta + Aside) */
+.game-play-area {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+  margin-top: 0.5rem;
+}
+
+.question-container {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.comic-aside {
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.aside-frame {
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px var(--accent-red);
+  background-color: #0b0b0c;
+  background-image: radial-gradient(rgba(255, 26, 26, 0.12) 1.5px, transparent 0);
+  background-size: 8px 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 250px;
+}
+
+#aside-comic-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aside-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--text-light);
+  border-top: 3.5px solid #000;
+  font-family: var(--font-title);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 0.4rem;
+  text-align: center;
+}
+
+/* Responsividad de la zona de juego */
+@media (max-width: 768px) {
+  .game-play-area {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+  
+  .comic-aside {
+    width: 100%;
+  }
+  
+  .aside-frame {
+    min-height: 180px;
+    height: 180px;
+  }
+}
+
+/* Footer / Firma */
+.footer-text {
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.2);
+  margin-top: 2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 580px) {
+  .app-container {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    margin-bottom: 1.2rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+  
+  .question-text {
+    font-size: 1.05rem;
+  }
+  
+  .option-btn {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.85rem;
+  }
+}
