@@ -1,0 +1,6 @@
+# Temporary folders and scratch files
+scratch/
+node_modules/
+package.json
+package-lock.json
+.system_generated/
